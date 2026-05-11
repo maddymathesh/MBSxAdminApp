@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MBS Admin</string>
+    <string name="store_name">MADDY BGMI STORE</string>
+    <string name="admin_url">maddybgmistore.in/admin</string>
+    <string name="unlock">Unlock</string>
+    <string name="set_pin">Set PIN</string>
+    <string name="retry">Retry</string>
+    <string name="offline_title">No Internet Connection</string>
+    <string name="offline_message">Please check your connection and try again.</string>
+</resources>

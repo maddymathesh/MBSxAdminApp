@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand colors -->
+    <color name="gold_primary">#FFD700</color>
+    <color name="gold_dark">#B8860B</color>
+    <color name="gold_light">#FFEC6E</color>
+    <color name="green_live">#00E676</color>
+
+    <!-- Background colors -->
+    <color name="bg_dark">#0A0A0A</color>
+    <color name="bg_toolbar">#111111</color>
+    <color name="bg_card">#1A1A1A</color>
+
+    <!-- Text colors -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#AAAAAA</color>
+    <color name="text_hint">#666666</color>
+
+    <!-- System colors (required) -->
+    <color name="colorPrimary">#FFD700</color>
+    <color name="colorPrimaryVariant">#B8860B</color>
+    <color name="colorOnPrimary">#000000</color>
+    <color name="colorSecondary">#00E676</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorSurface">#1A1A1A</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorBackground">#0A0A0A</color>
+    <color name="colorOnBackground">#FFFFFF</color>
+    <color name="colorError">#FF5252</color>
+    <color name="colorOnError">#FFFFFF</color>
+</resources>

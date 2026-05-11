@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark">
+
+    <!-- Full-screen wallpaper background -->
+    <ImageView
+        android:id="@+id/iv_wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/wallpaper_lock"
+        android:contentDescription="@null" />
+
+    <!-- Dark gradient overlay for text readability -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_overlay" />
+
+    <!-- Content scrollable container -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="80dp"
+            android:paddingBottom="40dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <!-- MBS Logo — 100dp circle with gold stroke -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                app:cardCornerRadius="54dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/gold_primary"
+                android:layout_marginBottom="4dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/bg_card">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/mbs_logo"
+                        android:contentDescription="MBS Logo" />
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Store name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MADDY BGMI STORE"
+                android:textColor="@color/gold_primary"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin Panel"
+                android:textColor="#AAFFFFFF"
+                android:textSize="13sp"
+                android:layout_marginBottom="32dp" />
+
+            <!-- PIN input card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="12dp"
+                app:cardBackgroundColor="#CC111111"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/tv_lock_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Admin Login"
+                        android:textColor="@color/gold_primary"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your PIN to access admin panel"
+                        android:textColor="#CCFFFFFF"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- PIN input field -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:hint="PIN (4–6 digits)"
+                        app:boxStrokeColor="@color/gold_primary"
+                        app:hintTextColor="@color/gold_primary"
+                        android:layout_marginBottom="20dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_pin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberPassword"
+                            android:maxLength="6"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:gravity="center"
+                            android:letterSpacing="0.5"
+                            android:imeOptions="actionDone" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Unlock button -->
+                    <Button
+                        android:id="@+id/btn_unlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Unlock"
+                        android:textColor="@color/bg_dark"
+                        android:textStyle="bold"
+                        android:backgroundTint="@color/gold_primary"
+                        app:cornerRadius="12dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Biometric button -->
+                    <Button
+                        android:id="@+id/btn_biometric"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="🫆  Use Fingerprint"
+                        android:textColor="@color/gold_primary"
+                        android:backgroundTint="#22FFD700"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        app:strokeColor="@color/gold_primary"
+                        app:cornerRadius="12dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

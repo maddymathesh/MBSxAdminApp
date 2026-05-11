@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark">
+
+    <!-- Custom Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/bg_toolbar"
+        android:elevation="4dp"
+        app:contentInsetStart="0dp">
+
+        <!-- Toolbar content row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <!-- Logo circle with gold border -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                app:cardCornerRadius="21dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/gold_primary"
+                android:layout_marginRight="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="19dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/bg_dark">
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/mbs_logo"
+                        android:contentDescription="MBS Logo" />
+
+                </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Title + URL column -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MADDY BGMI STORE"
+                    android:textColor="@color/gold_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="maddybgmistore.in/admin"
+                    android:textColor="#88FFFFFF"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <!-- LIVE badge -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="● LIVE"
+                android:textColor="@color/green_live"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginRight="4dp" />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Progress bar — sits just below toolbar, no loading overlay with images -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:max="100"
+        android:progress="0"
+        android:progressTint="@color/gold_primary"
+        android:progressBackgroundTint="@color/bg_toolbar"
+        android:visibility="gone" />
+
+    <!-- SwipeRefreshLayout wraps the WebView -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- The WebView — clean, no overlays -->
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_dark" />
+
+            <!-- Offline screen — text/icon only, NO ImageViews -->
+            <LinearLayout
+                android:id="@+id/layout_offline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/bg_dark"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📡"
+                    android:textSize="64sp"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Internet Connection"
+                    android:textColor="@color/gold_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Please check your connection and try again."
+                    android:textColor="#99FFFFFF"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="32dp" />
+
+                <Button
+                    android:id="@+id/btn_retry"
+                    android:layout_width="160dp"
+                    android:layout_height="48dp"
+                    android:text="Retry"
+                    android:textColor="@color/bg_dark"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/gold_primary"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

@@ -1,0 +1,4 @@
+-keep class in.maddybgmistore.admin.** { *; }
+-keepattributes *Annotation*
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**

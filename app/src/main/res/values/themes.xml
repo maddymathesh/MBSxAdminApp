@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MaddyBGMIStore" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/gold_primary</item>
+        <item name="colorPrimaryVariant">@color/gold_dark</item>
+        <item name="colorOnPrimary">@color/bg_dark</item>
+        <item name="colorSecondary">@color/green_live</item>
+        <item name="colorOnSecondary">@color/bg_dark</item>
+        <item name="colorSurface">@color/bg_card</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:colorBackground">@color/bg_dark</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/bg_toolbar</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">@color/bg_dark</item>
+
+        <!-- Toolbar -->
+        <item name="toolbarStyle">@style/MBSToolbarStyle</item>
+    </style>
+
+    <style name="MBSToolbarStyle" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@color/bg_toolbar</item>
+        <item name="titleTextColor">@color/gold_primary</item>
+        <item name="subtitleTextColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Lock screen: full screen, no status/nav bar chrome -->
+    <style name="Theme.MaddyBGMIStore.Lock" parent="Theme.MaddyBGMIStore">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+</resources>
