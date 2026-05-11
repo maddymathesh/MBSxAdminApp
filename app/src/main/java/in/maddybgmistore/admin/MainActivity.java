@@ -335,67 +335,45 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
             WebView popup = new WebView(MainActivity.this);
-
-            // Configure popup WebView with same critical settings
             WebSettings ps = popup.getSettings();
             ps.setJavaScriptEnabled(true);
             ps.setDomStorageEnabled(true);
             ps.setDatabaseEnabled(true);
-            ps.setSupportMultipleWindows(true);
-            ps.setJavaScriptCanOpenWindowsAutomatically(true);
             ps.setUserAgentString(CHROME_UA);
             ps.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-            ps.setCacheMode(WebSettings.LOAD_DEFAULT);
-
-            // Cookies & Storage persistence
+            ps.setSupportMultipleWindows(true);
+            ps.setJavaScriptCanOpenWindowsAutomatically(true);
             CookieManager.getInstance().setAcceptThirdPartyCookies(popup, true);
-
-            // Visual setup for popup (hidden, just for auth state)
-            popup.setVerticalScrollBarEnabled(false);
-            popup.setHorizontalScrollBarEnabled(false);
-            popup.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
             popup.setWebViewClient(new WebViewClient() {
                 @Override
-                public void onPageStarted(WebView v, String url, Bitmap fav) {
-                    super.onPageStarted(v, url, fav);
-                    v.evaluateJavascript(SESSION_STORAGE_BRIDGE_JS, null);
-                }
-
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView popupView, WebResourceRequest request) {
-                    String url = request.getUrl().toString();
-
-                    if (url.contains("__/auth/handler")) {
-                        runOnUiThread(() -> {
-                            CookieManager.getInstance().flush();
-                            webView.loadUrl(url);
-                        });
-
-                        popupView.stopLoading();
-
-                        popupView.postDelayed(() -> {
-                            popupView.destroy();
-                        }, 300);
-
-                        return true;
-                    }
-
-                    // Keep ALL Google/Firebase auth pages INSIDE popup
-                    if (isInternalUrl(url)) {
-                        return false;
-                    }
-
-                    // External URLs go to system browser
-                    try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
-                    catch (Exception ignored) {}
-                    return true;
+                public void onPageStarted(WebView pv, String url, Bitmap favicon) {
+                    super.onPageStarted(pv, url, favicon);
+                    // Inject bridge into popup at earliest moment — same localStorage
+                    // as the main WebView (same origin = same storage partition)
+                    pv.evaluateJavascript(SESSION_STORAGE_BRIDGE_JS, null);
                 }
 
                 @Override
                 public void onPageFinished(WebView pv, String url) {
                     super.onPageFinished(pv, url);
+                    // Re-inject after finish as safety net
                     pv.evaluateJavascript(SESSION_STORAGE_BRIDGE_JS, null);
+                    CookieManager.getInstance().flush();
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView pv, WebResourceRequest request) {
+                    String url = request.getUrl().toString();
+                    // When Google auth completes it redirects to __/auth/handler
+                    // Load that back in the MAIN WebView so Firebase reads state
+                    // from the same session that wrote it
+                    if (url.contains("__/auth/handler") || url.contains("maddybgmistore.in")) {
+                        webView.loadUrl(url);
+                        return true;
+                    }
+                    // All other auth pages stay in popup
+                    return false;
                 }
             });
 
