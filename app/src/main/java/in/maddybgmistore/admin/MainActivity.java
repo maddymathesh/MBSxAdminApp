@@ -149,18 +149,6 @@ public class MainActivity extends AppCompatActivity {
         "    }" +
         "  };" +
 
-        // 4. POPUP FIX: Keep auth popups in the same WebView context
-        "  var _winOpen = window.open;" +
-        "  window.open = function(url, name, features) {" +
-        "    if (url && (url.indexOf('accounts.google.com') !== -1 ||" +
-        "               url.indexOf('firebaseapp.com') !== -1 ||" +
-        "               url.indexOf('/__/auth/') !== -1)) {" +
-        "      window.location.href = url;" +
-        "      return null;" +
-        "    }" +
-        "    return _winOpen.apply(window, arguments);" +
-        "  };" +
-
         "})();";
 
     private WebView webView;
