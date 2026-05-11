@@ -214,6 +214,12 @@ public class MainActivity extends AppCompatActivity {
         progressBar   = findViewById(R.id.progress_bar);
         layoutOffline = findViewById(R.id.layout_offline);
 
+        // UI/UX: Native app feel - remove scrollbars and edge effects
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
         setupWebView();
         setupSwipeRefresh();
         requestStoragePermissions();
@@ -260,9 +266,12 @@ public class MainActivity extends AppCompatActivity {
         // General UX settings
         s.setLoadWithOverviewMode(true);
         s.setUseWideViewPort(true);
-        s.setBuiltInZoomControls(true);
+
+        // Disable accidental zoom
+        s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
-        s.setSupportZoom(true);
+        s.setSupportZoom(false);
+
         s.setDefaultTextEncodingName("utf-8");
         s.setCacheMode(WebSettings.LOAD_DEFAULT);
         s.setAllowFileAccess(true);
@@ -337,28 +346,53 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
             WebView popup = new WebView(MainActivity.this);
+
+            // Configure popup WebView with same critical settings
             WebSettings ps = popup.getSettings();
             ps.setJavaScriptEnabled(true);
             ps.setDomStorageEnabled(true);
             ps.setDatabaseEnabled(true);
+            ps.setSupportMultipleWindows(true);
+            ps.setJavaScriptCanOpenWindowsAutomatically(true);
             ps.setUserAgentString(CHROME_UA);
             ps.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+
+            // Cookies & Storage persistence
             CookieManager.getInstance().setAcceptThirdPartyCookies(popup, true);
+
+            // Visual setup for popup (hidden, just for auth state)
+            popup.setVerticalScrollBarEnabled(false);
+            popup.setHorizontalScrollBarEnabled(false);
+            popup.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
             popup.setWebViewClient(new WebViewClient() {
                 @Override
+                public void onPageStarted(WebView v, String url, Bitmap fav) {
+                    super.onPageStarted(v, url, fav);
+                    v.evaluateJavascript(SESSION_STORAGE_BRIDGE_JS, null);
+                }
+
+                @Override
                 public boolean shouldOverrideUrlLoading(WebView popupView, WebResourceRequest request) {
                     String url = request.getUrl().toString();
-                    if (isInternalUrl(url)) {
-                        // Auth handler redirect → load in main WebView so Firebase
-                        // can read the result in the same sessionStorage session
-                        if (url.contains("__/auth/handler") || url.contains("maddybgmistore.in")) {
-                            webView.loadUrl(url);
-                            return true;
-                        }
-                        return false; // stay in popup for Google consent pages
+
+                    // If it's the main app or the auth handler, load it in the main WebView
+                    if (url.contains("maddybgmistore.in") || url.contains("__/auth/handler")) {
+                        webView.loadUrl(url);
+                        // Clean up the popup
+                        popupView.stopLoading();
+                        popupView.destroy();
+                        return true;
                     }
-                    return false;
+
+                    // Keep Google/Firebase auth pages in this popup context if needed,
+                    // or force them into the main WebView if they are internal.
+                    if (isInternalUrl(url)) return false;
+
+                    // External URLs go to system browser
+                    try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
+                    catch (Exception ignored) {}
+                    return true;
                 }
 
                 @Override
