@@ -237,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
         s.setDatabaseEnabled(true);
+        WebView.setWebContentsDebuggingEnabled(true);
 
         // Exact Chrome UA — do NOT modify or append anything
         s.setUserAgentString(CHROME_UA);
@@ -344,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
             ps.setJavaScriptCanOpenWindowsAutomatically(true);
             ps.setUserAgentString(CHROME_UA);
             ps.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+            ps.setCacheMode(WebSettings.LOAD_DEFAULT);
 
             // Cookies & Storage persistence
             CookieManager.getInstance().setAcceptThirdPartyCookies(popup, true);
@@ -364,18 +366,25 @@ public class MainActivity extends AppCompatActivity {
                 public boolean shouldOverrideUrlLoading(WebView popupView, WebResourceRequest request) {
                     String url = request.getUrl().toString();
 
-                    // If it's the main app or the auth handler, load it in the main WebView
-                    if (url.contains("maddybgmistore.in") || url.contains("__/auth/handler")) {
-                        webView.loadUrl(url);
-                        // Clean up the popup
+                    if (url.contains("__/auth/handler")) {
+                        runOnUiThread(() -> {
+                            CookieManager.getInstance().flush();
+                            webView.loadUrl(url);
+                        });
+
                         popupView.stopLoading();
-                        popupView.destroy();
+
+                        popupView.postDelayed(() -> {
+                            popupView.destroy();
+                        }, 300);
+
                         return true;
                     }
 
-                    // Keep Google/Firebase auth pages in this popup context if needed,
-                    // or force them into the main WebView if they are internal.
-                    if (isInternalUrl(url)) return false;
+                    // Keep ALL Google/Firebase auth pages INSIDE popup
+                    if (isInternalUrl(url)) {
+                        return false;
+                    }
 
                     // External URLs go to system browser
                     try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); }
